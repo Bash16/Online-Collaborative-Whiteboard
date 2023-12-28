@@ -1,0 +1,68 @@
+ body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                background-color: #f5f5f5;
+            }
+
+            #whiteboard {
+                border: 1px solid #000;
+                margin-bottom: 20px;
+            }
+
+            #header {
+                font-family: 'Pacifico', cursive;
+                font-size: 36px;
+                margin-bottom: 20px;
+            }
+
+            #controls {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            #colorPicker {
+                margin-right: 20px;
+            }
+
+            #username {
+                margin-left: 70px;
+                margin-bottom: 10px;
+                padding: 5px;
+                font-size: 16px;
+            }
+
+            #setUsernameBtn {
+                margin-left: 15px;
+                padding: 8px;
+                font-size: 16px;
+                background-color: #4caf50;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
+
+            #userList {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .user {
+                margin-bottom: 5px;
+            }
+
+            #clearCanvasBtn {
+                padding: 8px;
+                font-size: 16px;
+                background-color: #f44336;
+                color: white;
+                border: none;
+                cursor: pointer;
+            }
