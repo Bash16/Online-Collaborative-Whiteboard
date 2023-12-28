@@ -31,9 +31,9 @@
 
             #controls {
                 display: flex;
-                flex-direction: row; /* Change to row */
+                flex-direction: row;
                 align-items: center;
-                margin-bottom: 20px; /* Add margin to separate from the next section */
+                margin-bottom: 20px;
             }
 
             #colorPicker {
@@ -75,7 +75,6 @@
                 cursor: pointer;
             }
         </style>
-        <!-- Include jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.css" />
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -86,23 +85,20 @@
         <canvas id="whiteboard" width="800" height="600"></canvas>
 
         <div id="controls">
-            <!-- Add a color picker input -->
-            <input type="text" id="colorPicker" value="#000000" />
 
-            <!-- Add an input for setting the username -->
+            <input type="text" id="colorPicker" value="#000000" />
             <input type="text" id="username" placeholder="Enter your username" />
 
-            <!-- Add a button to set the username -->
+
             <button id="setUsernameBtn">Set Username</button>
         </div>
 
         <button id="clearCanvasBtn" onclick="clearCanvas()">Clear Canvas</button>
 
-        <!-- Add a div to display the list of connected users -->
         <div id="userList"></div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
-        <!-- Include the Spectrum color picker library -->
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.js"></script>
 
         <script>
@@ -110,33 +106,33 @@
             const canvas = document.getElementById('whiteboard');
             const context = canvas.getContext('2d');
             let drawing = false;
-            let selectedColor = '#000000'; // Initial color
-            let username = null; // User's username
+            let selectedColor = '#000000';
+            let username = null;
             let touchX, touchY;
 
-            // Request initial drawing data when connecting to the server
+
             socket.on('connect', function () {
                 socket.emit('get_initial_data');
             });
 
-            // Initialize the Spectrum color picker
+
             $("#colorPicker").spectrum({
                 preferredFormat: "hex",
                 showPalette: true,
-                palette: ["#000000", "#FF0000", "#00FF00", "#0000FF"], // Example colors
+                palette: ["#000000", "#FF0000", "#00FF00", "#0000FF"],
                 change: function (color) {
                     selectedColor = color.toHexString();
                 }
             });
 
-            // Update the list of connected users
+
                 socket.on('update_users', function(users) {
                     const userListDiv = document.getElementById('userList');
                     userListDiv.innerHTML = '<b>Users:</b><br>' + users.join('<br>');
                 });
 
 
-            // Add event listener for the "Set Username" button
+
             document.getElementById('setUsernameBtn').addEventListener('click', function () {
                 setUsername();
             });
@@ -145,20 +141,17 @@
                 username = document.getElementById('username').value;
 
                 console.log('Username set:', username);
-
-                // Update the list of connected users immediately after setting the username
                 updateUserList();
 
-                // Emit 'set_username' event to inform the server
                 socket.emit('set_username', username);
             }
 
-            // For mouse/touchpad
+
             canvas.addEventListener('mousedown', startDrawing);
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mousemove', draw);
 
-            // For touch screens
+
             canvas.addEventListener('touchstart', startDrawing);
             canvas.addEventListener('touchmove', draw);
             canvas.addEventListener('touchend', stopDrawing);
@@ -220,10 +213,10 @@
                 context.lineJoin = 'round';
                 context.lineCap = 'round';
                 context.lineWidth = 5;
-                context.strokeStyle = data.color; // Use the color received from other users
+                context.strokeStyle = data.color;
 
-                context.beginPath(); // Start a new path for each point
-                context.arc(x, y, 2.5, 0, 2 * Math.PI); // Draw a small circle (dot)
+                context.beginPath();
+                context.arc(x, y, 2.5, 0, 2 * Math.PI);
                 context.fillStyle = data.color;
                 context.fill();
                 context.stroke();
@@ -231,23 +224,21 @@
 
             function clearCanvas() {
                 context.clearRect(0, 0, canvas.width, canvas.height);
-                socket.emit('clear'); // Emit the 'clear' event
+                socket.emit('clear');
             }
 
             socket.on('clear', function () {
                 context.clearRect(0, 0, canvas.width, canvas.height);
-                updateUserList(); // Update the list of connected users
+                updateUserList();
             });
 
-            // Update the list of connected users
             function updateUserList() {
                 socket.emit('get_user_list');
             }
 
-            // Display the list of connected users
             socket.on('user_list', function (users) {
                 const userListElement = document.getElementById('userList');
-                userListElement.innerHTML = ''; // Clear the previous list
+                userListElement.innerHTML = '';
 
                 users.forEach(user => {
                     const userElement = document.createElement('div');

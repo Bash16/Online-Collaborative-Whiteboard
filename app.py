@@ -4,9 +4,8 @@ from flask_socketio import SocketIO, emit
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-# Maintain a list of drawing data
 drawing_data = []
-# Maintain a list of connected users
+
 connected_users = {}
 
 @app.route('/')
@@ -25,15 +24,13 @@ def handle_clear():
 
 @socketio.on('get_initial_data')
 def send_initial_data():
-    # Send the initial drawing data to a new client
+
     for data in drawing_data:
         emit('draw', data)
 
 @socketio.on('connect')
 def handle_connect():
-    # Send the initial drawing data to a new client upon connection
     send_initial_data()
-    # Handle setting username
     emit('set_username', broadcast=True)
 
 @socketio.on('disconnect')
